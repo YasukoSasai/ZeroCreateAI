@@ -30,13 +30,19 @@ def img_show(img):
   # print("-------- PIL型 ---------")
   # print(pil_img)
   pil_img.show()
-#--------------------入力する訓練データ-------------------------
-img = x_test[3263]
+img = x_test[2001]
 print(img[0])
-img[0] = 255
 # print("img.shape", img.shape) #784
 #------------------- 正解は？----------------------------
-label = t_test[3263]
+label = t_test[2001]
+k = 0
+aaa = []
+for i in range(28):
+  for j in range(28):
+    aaa.append(img[k])
+    k += 1
+  print(aaa)
+  aaa = []
 # print("正解", label) #正解のデータ 5
 #-------------------変形してimg.show()に入れて実行 --------------------
 img = img.reshape(28, 28)

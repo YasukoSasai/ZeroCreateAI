@@ -64,7 +64,6 @@ for i in range (iters_num): #10000回繰り返し
     loss = network.loss(x_batch, t_batch)
     train_loss_list.append(loss)
 
-<<<<<<< HEAD
 #1エポックごとにテストデータで認識精度を計算　計算に時間がかかるのでざっくりと。
 # if i % iter_per_epoch == 0:
 print("テスト開始")

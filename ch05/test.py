@@ -8,9 +8,8 @@ from dataset.mnist import load_mnist
 from two_layers_net import TwoLayerNet
 from PIL import Image #画像表示にはPILモジュールを使う。
 
-# ================== ミニバッチ学習の実装 ==================
+#============ データを取得(入力データを一次元化、正解ラベルをone_hot_label化) ==================
 (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True, one_hot_label=True)
-#=======================================================
 
 # ================== ディープラーニングのモデルを定義 ==================
 network = TwoLayerNet(input_size=784, hidden_size=50, output_size=10) #NNのインスタンス生成
@@ -29,8 +28,13 @@ test_acc_list = [] #テストにおける正確率
 
 iter_per_epoch = max(train_size / batch_size, 1) #1エポックあたりの繰り返し数　エポック=訓練データをすべて使い切った回数。60000/100枚 回勾配を行った = １エポック学習を行った。
 
+print("** 元データ内容 **")
+print("x_train.shape", x_train.shape) #訓練データの入力データ
+print("t_train.shape", t_train.shape) #訓練データの正解データ one_hot_labelにしてるから10
+print("x_test.shape", x_test.shape) #テストデータの入力データ
+print("t_test.shape", t_test.shape) #テストデータの正解データ
 # 学習フェーズ
-print("学習開始")
+print("====== 学習開始 ======")
 #何枚の画像で学習したか(画像のシェイプも)
 #開始時間取得
 for i in range (iters_num): #10000回繰り返し
@@ -38,6 +42,15 @@ for i in range (iters_num): #10000回繰り返し
     batch_mask = np.random.choice(train_size, batch_size) #train_size枚の中からbatch_size枚ランダムで配列で取り出す
     x_batch = x_train[batch_mask] #100個の入力画像
     t_batch = t_train[batch_mask] #100個の入力画像に対する正解データ
+
+    if i == 1:
+        # print("画像データ", x_batch[0]) #すべて出すと大量になるので一枚だけ
+        # print("画像データ", t_batch[0]) #すべて出すと大量になるので一枚だけ
+        print("---- １回の学習で使われるバッチデータ ----")
+        print("x_batch.shape", x_batch.shape)
+        print(str(x_batch.shape[0]) + "枚分、"+ str(x_batch.shape[1]) + "ピクセル/枚")
+        print("t_batch.shape", t_batch.shape)
+        print(str(t_batch.shape[0]) + "枚分の"+ str(t_batch.shape[1]) + "個の正解ラベル")
 
     #====== 勾配計算 =====
     #数値微分
@@ -57,10 +70,13 @@ for i in range (iters_num): #10000回繰り返し
 
 #1エポックごとにテストデータで認識精度を計算　計算に時間がかかるのでざっくりと。
 # if i % iter_per_epoch == 0:
-print("テスト開始")
+print("========================")
+print("====== テスト開始 ======")
 #開始時間取得
 test_size = x_test.shape[0]
-batch_mask = np.random.choice(test_size, 10) #train_size枚の中からbatch_size枚ランダムで配列で取り出す
+batch_mask = np.random.choice(test_size, 10) 
+print("batch_mask",batch_mask)
+#train_size枚の中からbatch_size枚ランダムで配列で取り出す
 x_test = x_test[batch_mask] #100個の入力画像
 t_test = t_test[batch_mask] #100個の入力画像に対する正解データ
 test_acc = network.accuracy(x_test, t_test)
@@ -83,13 +99,14 @@ canvas = Image.new('RGB', (int(chr_w * num/2), int(chr_h * num/2)), (255, 255, 2
 # MNISTの文字を読み込んで描画
 i = 0
 (x_train, t_train), (x_test, t_test) = \
-  load_mnist(flatten=True, normalize=False)
+    load_mnist(flatten=True, normalize=False)
 
-for x in range( int(num/2) ):
-    chrImg = ConvertToImg(x_test[i].reshape(chr_w, chr_h))
-    canvas.paste(chrImg, (chr_w*x, chr_h))
+for item in batch_mask:
+    chrImg = ConvertToImg(x_test[item].reshape(chr_w, chr_h))
+    canvas.paste(chrImg, (chr_w*i, chr_h))
     i = i + 1
 
 canvas.show()
 # 表示した画像をJPEGとして保存
-canvas.save('mnist.jpg', 'JPEG', quality=100, optimize=True)
+# canvas.save('mnist.jpg', 'JPEG', quality=100, optimize=True)
+
