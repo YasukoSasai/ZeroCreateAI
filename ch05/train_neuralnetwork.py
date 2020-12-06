@@ -77,19 +77,6 @@ print("train acc, test acc | " + str(train_acc) + ", " + str(test_acc))
         # if i == 600:
         #   print(x_test, t_test)
         #   print("テストデータ", network.predict(x_test, t_test))
-=======
-    #1エポックごとにテストデータで認識精度を計算　計算に時間がかかるのでざっくりと。
-    if i % iter_per_epoch == 0:
-        train_acc = network.accuracy(x_train, t_train)
-        test_acc = network.accuracy(x_test, t_test)
-        
-        train_acc_list.append(train_acc)
-        test_acc_list.append(test_acc)
-        # print("train acc, tesst acc | " + str(train_acc) + ", " + str(test_acc))
-
-
-    
->>>>>>> 5847af0c7043b2097389ece95d70c7245e6d9558
 
 # ************* グラフによる確認 ******************
 # ========== 学習による誤差推移 ==============

@@ -48,13 +48,9 @@ class TwoLayerNet:
     #正確率
     def accuracy(self, x, t): 
         y = self.predict(x) #出力yにxのself.predictの値を代入。
-<<<<<<< HEAD
         self.lastLayer.forward(y, t)
         print("予測確率", self.lastLayer.y)
         y = np.argmax(self.lastLayer.y, axis=1) #axis=1　1次元を(列)を軸に最大値を抜き出す。
-=======
-        y = np.argmax(y, axis=1) #axis=1　1次元を(列)を軸に最大値のインデックスを抜き出す。
->>>>>>> 5847af0c7043b2097389ece95d70c7245e6d9558
         if t.ndim != 1 : t = np.argmax(t, axis = 1)
         print("予測結果", y)
         print("正解データ",t)

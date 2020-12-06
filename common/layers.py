@@ -6,21 +6,12 @@ from common.util import im2col, col2im
 
 class Relu:
     def __init__(self):
-<<<<<<< HEAD
         self.mask = None
 
     def forward(self, x):
         self.mask = (x <= 0)
         out = x.copy()
         out[self.mask] = 0
-=======
-        self.mask = None #順伝播の結果をmaskとして保持
-
-    def forward(self, x):
-        self.mask = (x <= 0) 
-        out = x.copy() #xをコピーしてoutとする
-        out[self.mask] = 0 #
->>>>>>> 5847af0c7043b2097389ece95d70c7245e6d9558
 
         return out
 
@@ -67,17 +58,11 @@ class Affine:
 
         return out
 
-<<<<<<< HEAD
     def backward(self, dout):
         dx = np.dot(dout, self.W.T)
         self.dW = np.dot(self.x.T, dout)
         # print("self.x.shape", self.x.shape)
         # print("self.dW.shape", self.dW.shape)
-=======
-    def backward(self, dout): #Affine2のときはlastlayerのdout,Affine1のときはReluのdout
-        dx = np.dot(dout, self.W.T) #
-        self.dW = np.dot(self.x.T, dout)
->>>>>>> 5847af0c7043b2097389ece95d70c7245e6d9558
         self.db = np.sum(dout, axis=0)
         
         dx = dx.reshape(*self.original_x_shape)  # 入力データの形状に戻す（テンソル対応）
@@ -93,17 +78,13 @@ class SoftmaxWithLoss:
     def forward(self, x, t):
         self.t = t
         self.y = softmax(x)
-<<<<<<< HEAD
         # print("正解データ[99]", self.t[99])
         # print("ソフトマックス関数の出力[99]", self.y[99])
-=======
->>>>>>> 5847af0c7043b2097389ece95d70c7245e6d9558
         self.loss = cross_entropy_error(self.y, self.t)
         
         return self.loss
 
     def backward(self, dout=1):
-<<<<<<< HEAD
         batch_size = self.t.shape[0]
         # print("batch_size", batch_size) #100
         # print("self.t.size", self.t.size)
@@ -113,12 +94,6 @@ class SoftmaxWithLoss:
             # print("dx.shape", dx.shape)
             # print("dx", dx)
         else:
-=======
-        batch_size = self.t.shape[0] #100
-        if self.t.size == self.y.size: # 教師データがone-hot-vectorの場合
-            dx = (self.y - self.t) / batch_size
-        else: #バッチ全体の誤差を計算しているので。→交差エントロピーも
->>>>>>> 5847af0c7043b2097389ece95d70c7245e6d9558
             dx = self.y.copy()
             dx[np.arange(batch_size), self.t] -= 1
             dx = dx / batch_size
