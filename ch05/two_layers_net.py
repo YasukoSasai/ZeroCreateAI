@@ -6,9 +6,12 @@ from common.gradient import numerical_gradient
 from common.layers import *
 from collections import OrderedDict
 #------------- 誤差逆伝播に対応したNNの実装 ------------------
-#計算が早くなる。
 class TwoLayerNet:
     def __init__(self, input_size, hidden_size, output_size, weight_init_std=0.01): 
+        print("------モデルの形------")
+        print("入力数：", input_size)
+        print("中間層：", hidden_size)
+        print("出力層：", output_size)
         #__init__クラスの初期化メソッド。input_size=784,output_size=10クラス,hiddenは適当な数を設定
         self.params = {} #ディクショナリ変数。それぞれNumpy配列で格納。
         self.params['W1'] = weight_init_std * np.random.randn(input_size, hidden_size) #random.randn = 形状が(784*50)の(0以上1未満の乱数)
@@ -49,7 +52,8 @@ class TwoLayerNet:
     def accuracy(self, x, t): 
         y = self.predict(x) #出力yにxのself.predictの値を代入。
         self.lastLayer.forward(y, t)
-        print("予測確率", self.lastLayer.y)
+        print("------- 予測確率 -------")
+        print(self.lastLayer.y)
         y = np.argmax(self.lastLayer.y, axis=1) #axis=1　1次元を(列)を軸に最大値を抜き出す。
         if t.ndim != 1 : t = np.argmax(t, axis = 1)
         print("予測結果", y)

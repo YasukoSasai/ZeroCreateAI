@@ -25,9 +25,9 @@ train_acc_list = [] #学習における正確率
 test_acc_list = [] #テストにおける正確率
 
 #====== 重み・パラメータグラフ表示するとき ======
-w_update_list_0 = []
-w_update_list_4 = []
-w_update_list_9 = []
+# w_update_list_0 = []
+# w_update_list_4 = []
+# w_update_list_9 = []
 
 iter_per_epoch = max(train_size / batch_size, 1) #1エポックあたりの繰り返し数　エポック=訓練データをすべて使い切った回数。60000/100枚 回勾配を行った = １エポック学習を行った。
 
@@ -65,14 +65,14 @@ for i in range (iters_num): #10000回繰り返し
     train_loss_list.append(loss)
 
 #1エポックごとにテストデータで認識精度を計算　計算に時間がかかるのでざっくりと。
-# if i % iter_per_epoch == 0:
-print("テスト開始")
-train_acc = network.accuracy(x_train, t_train)
-test_acc = network.accuracy(x_test, t_test)
+    if i % iter_per_epoch == 0:
+        # print("テスト開始")
+        train_acc = network.accuracy(x_train, t_train)
+        test_acc = network.accuracy(x_test, t_test)
 
-train_acc_list.append(train_acc)
-test_acc_list.append(test_acc)
-print("train acc, test acc | " + str(train_acc) + ", " + str(test_acc))
+        train_acc_list.append(train_acc)
+        test_acc_list.append(test_acc)
+        # print("train acc, test acc | " + str(train_acc) + ", " + str(test_acc))
         # if i == 600:
         #   print(x_test, t_test)
         #   print("テストデータ", network.predict(x_test, t_test))
@@ -80,21 +80,21 @@ print("train acc, test acc | " + str(train_acc) + ", " + str(test_acc))
 # ************* グラフによる確認 ******************
 # ========== 学習による誤差推移 ==============
 # print("train_loss_list", train_loss_list)
-# plt.plot(train_loss_list)
-# plt.xlabel("iteration")
-# plt.ylabel("loss")
-# plt.show() #しかしここで得られた損失関数はミニバッチに対する損失関数(100枚)
+plt.plot(train_loss_list)
+plt.xlabel("iteration")
+plt.ylabel("loss")
+plt.show() #しかしここで得られた損失関数はミニバッチに対する損失関数(100枚)
 
 # ========== 訓練データとテストデータで認識精度をグラフ化(汎化性能を見るため) ================
-# markers = {'train': 'o', 'test': 's'}
-# x = np.arange(len(train_acc_list))
-# plt.plot(x, train_acc_list, label='train acc')
-# plt.plot(x, test_acc_list, label='test acc', linestyle='--')
-# plt.xlabel("epochs")
-# plt.ylabel("accuracy")
-# plt.ylim(0, 1.0)
-# plt.legend(loc='lower right')
-# plt.show()
+markers = {'train': 'o', 'test': 's'}
+x = np.arange(len(train_acc_list))
+plt.plot(x, train_acc_list, label='train acc')
+plt.plot(x, test_acc_list, label='test acc', linestyle='--')
+plt.xlabel("epochs")
+plt.ylabel("accuracy")
+plt.ylim(0, 1.0)
+plt.legend(loc='lower right')
+plt.show()
 
 #========== テストデータ推測の結果表示 =========
 # x_sample = x_test[9] 
@@ -111,11 +111,11 @@ print("train acc, test acc | " + str(train_acc) + ", " + str(test_acc))
 # print("weight_per_data[0]のサイズ",weight_per_data[0].size)
 # print("weight_per_neuron[0]のサイズ",weight_per_neuron[0].size)
 # print("weight_first",weight_first)
-weight_per_data = list(network.params['W1'])
-weight_per_neuron = list(weight_per_data[0])
-weight_first = weight_per_neuron[0]
+# weight_per_data = list(network.params['W1'])
+# weight_per_neuron = list(weight_per_data[0])
+# weight_first = weight_per_neuron[0]
 
-plt.plot(w_update_list_0, train_loss_list, '-', label='train_loss_list')
-plt.plot(w_update_list_4, train_loss_list, '-', label='train_loss_list')
-plt.plot(w_update_list_9, train_loss_list, '-', label='train_loss_list')
-plt.show()
+# plt.plot(w_update_list_0, train_loss_list, '-', label='train_loss_list')
+# plt.plot(w_update_list_4, train_loss_list, '-', label='train_loss_list')
+# plt.plot(w_update_list_9, train_loss_list, '-', label='train_loss_list')
+# plt.show()

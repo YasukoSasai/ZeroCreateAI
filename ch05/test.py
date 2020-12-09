@@ -2,17 +2,22 @@
 #２層ニューラルネットワークのクラス
 import sys
 sys.path.append('../')
-import numpy as np
-import matplotlib.pyplot as plt
 from dataset.mnist import load_mnist
 from two_layers_net import TwoLayerNet
 from PIL import Image #画像表示にはPILモジュールを使う。
+import numpy as np
+import matplotlib.pyplot as plt
 
 #============ データを取得(入力データを一次元化、正解ラベルをone_hot_label化) ==================
 (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True, one_hot_label=True)
-
+print("----- 元データ内容 -----")
+print("x_train.shape", x_train.shape) #訓練データの入力データ
+print("t_train.shape", t_train.shape) #訓練データの正解データ one_hot_labelにしてるから10
+print("x_test.shape", x_test.shape) #テストデータの入力データ
+print("t_test.shape", t_test.shape) #テストデータの正解データ
 # ================== ディープラーニングのモデルを定義 ==================
 network = TwoLayerNet(input_size=784, hidden_size=50, output_size=10) #NNのインスタンス生成
+
 # =======================================================
 
 #====== ハイパーパラメータ ======
@@ -24,28 +29,22 @@ learning_rate = 0.1 #学習率
 train_loss_list = [] #学習ごとの損失関数を格納するためのリスト
 train_acc_list = [] #学習における正確率
 test_acc_list = [] #テストにおける正確率
-#============================
 
-iter_per_epoch = max(train_size / batch_size, 1) #1エポックあたりの繰り返し数　エポック=訓練データをすべて使い切った回数。60000/100枚 回勾配を行った = １エポック学習を行った。
+iter_per_epoch = max(train_size / batch_size, 1) #1エポックあたりの繰り返し数　エポック=訓練データをすべて使い切った回数。60000/100枚 回勾配を行った = １エポック学習を行った。600回。
 
-print("** 元データ内容 **")
-print("x_train.shape", x_train.shape) #訓練データの入力データ
-print("t_train.shape", t_train.shape) #訓練データの正解データ one_hot_labelにしてるから10
-print("x_test.shape", x_test.shape) #テストデータの入力データ
-print("t_test.shape", t_test.shape) #テストデータの正解データ
 # 学習フェーズ
 print("====== 学習開始 ======")
 #何枚の画像で学習したか(画像のシェイプも)
 #開始時間取得
 for i in range (iters_num): #10000回繰り返し
     #===== ミニバッチの取得 =====
-    batch_mask = np.random.choice(train_size, batch_size) #train_size枚の中からbatch_size枚ランダムで配列で取り出す
+    batch_mask = np.random.choice(train_size, batch_size) #train_size個の中からbatch_size個ランダムでインデックスを取り出す
     x_batch = x_train[batch_mask] #100個の入力画像
     t_batch = t_train[batch_mask] #100個の入力画像に対する正解データ
 
     if i == 1:
         # print("画像データ", x_batch[0]) #すべて出すと大量になるので一枚だけ
-        # print("画像データ", t_batch[0]) #すべて出すと大量になるので一枚だけ
+        # print("画像データ", t_batch[0])         
         print("---- １回の学習で使われるバッチデータ ----")
         print("x_batch.shape", x_batch.shape)
         print(str(x_batch.shape[0]) + "枚分、"+ str(x_batch.shape[1]) + "ピクセル/枚")
@@ -70,7 +69,6 @@ for i in range (iters_num): #10000回繰り返し
 
 #1エポックごとにテストデータで認識精度を計算　計算に時間がかかるのでざっくりと。
 # if i % iter_per_epoch == 0:
-print("========================")
 print("====== テスト開始 ======")
 #開始時間取得
 test_size = x_test.shape[0]
@@ -80,10 +78,12 @@ print("batch_mask",batch_mask)
 x_test = x_test[batch_mask] #100個の入力画像
 t_test = t_test[batch_mask] #100個の入力画像に対する正解データ
 test_acc = network.accuracy(x_test, t_test)
-test_acc_list.append(test_acc)
+# test_acc_list.append(test_acc)
 #終了時間取得
 #print(終了ー開始)
 print("test acc: "+ str(test_acc))
+
+
 #============================================
 
 def ConvertToImg(img):
