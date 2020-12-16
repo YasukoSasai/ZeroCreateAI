@@ -70,43 +70,57 @@ for i in range (iters_num): #10000回繰り返し
 #1エポックごとにテストデータで認識精度を計算　計算に時間がかかるのでざっくりと。
 # if i % iter_per_epoch == 0:
 print("====== テスト開始 ======")
-#開始時間取得
-test_size = x_test.shape[0]
-batch_mask = np.random.choice(test_size, 10) 
-print("batch_mask",batch_mask)
-#train_size枚の中からbatch_size枚ランダムで配列で取り出す
-x_test = x_test[batch_mask] #100個の入力画像
-t_test = t_test[batch_mask] #100個の入力画像に対する正解データ
-test_acc = network.accuracy(x_test, t_test)
+# #開始時間取得
+#================ 複数枚まとめてテストしたいとき(画像表示の仕方も変更する) ===========
+# test_size = x_test.shape[0]
+# batch_mask = np.random.choice(test_size, 10) #何枚でテストを行いたいか
+# print("batch_mask",batch_mask)
+# #train_size枚の中からbatch_size枚ランダムで配列で取り出す
+# x_test = x_test[batch_mask] #100個の入力画像
+# t_test = t_test[batch_mask] #100個の入力画像に対する正解データ
+# test_acc = network.accuracy(x_test, t_test)
 # test_acc_list.append(test_acc)
+# print(test_acc_list)
+
+
+#============== １枚テストデータを指定してテストしたいとき ===========
+x_test = x_test[[4]] 
+t_test = t_test[[4]] 
+test_acc = network.accuracy(x_test, t_test)
 #終了時間取得
 #print(終了ー開始)
+
+# ===========テスト時の精度 ============
 print("test acc: "+ str(test_acc))
 
 
 #============================================
 
-def ConvertToImg(img):
-    return Image.fromarray(np.uint8(img))
-# MNIST一文字の幅
-chr_w = 28
-# MNIST一文字の高さ
-chr_h = 28
-# 表示する文字数
-num = 20
-# MNISTの文字をPILで１枚の画像に描画する
-canvas = Image.new('RGB', (int(chr_w * num/2), int(chr_h * num/2)), (255, 255, 255))
-# MNISTの文字を読み込んで描画
-i = 0
-(x_train, t_train), (x_test, t_test) = \
-    load_mnist(flatten=True, normalize=False)
+# def ConvertToImg(img):
+#     return Image.fromarray(np.uint8(img))
+# # MNIST一文字の幅
+# chr_w = 28
+# # MNIST一文字の高さ
+# chr_h = 28
+# # 表示する文字数
+# num = 20
+# # MNISTの文字をPILで１枚の画像に描画する
+# canvas = Image.new('RGB', (int(chr_w * num/2), int(chr_h * num/2)), (255, 255, 255))
+# # MNISTの文字を読み込んで描画
+# i = 0
+# #======== 画像表示のために一旦unnormalizedデータを読み込む。(もっといい方法ありますかね) ==========
+# (x_train, t_train), (x_test, t_test) = \
+#     load_mnist(flatten=True, normalize=False)
+# #============ 一枚の画像を出したいとき ===========
+# chrImg = ConvertToImg(x_test[0].reshape(chr_w, chr_h))
+# canvas.paste(chrImg, (chr_w*i, chr_h))
+# #============ 複数ででテストする際の画像表示 ==============
+# # for item in batch_mask:
+# #     chrImg = ConvertToImg(x_test[item].reshape(chr_w, chr_h))
+# #     canvas.paste(chrImg, (chr_w*i, chr_h))
+# #     i = i + 1
 
-for item in batch_mask:
-    chrImg = ConvertToImg(x_test[item].reshape(chr_w, chr_h))
-    canvas.paste(chrImg, (chr_w*i, chr_h))
-    i = i + 1
-
-canvas.show()
+# canvas.show()
 # 表示した画像をJPEGとして保存
 # canvas.save('mnist.jpg', 'JPEG', quality=100, optimize=True)
 

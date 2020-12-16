@@ -13,12 +13,12 @@ import numpy as np
   （one_hot_label:ラベルをone_hot表現で格納するかどうか。one_hot表現＝正解ラベル１，それ以外０）
 """
 #データの形状
-print("x_train.shape", x_train.shape) #訓練データの入力データ
-print("t_train.shape", x_train.shape) #訓練データの正解データ
-print("x_test.shape", x_test.shape) #テストデータの入力データ
-print("t_test.shape", t_test.shape) #テストデータの正解データ
+# print("x_train.shape", x_train.shape) #訓練データの入力データ
+# print("t_train.shape", x_train.shape) #訓練データの正解データ
+# print("x_test.shape", x_test.shape) #テストデータの入力データ
+# print("t_test.shape", t_test.shape) #テストデータの正解データ
 
-#MNIST画像を表示
+#================= MNIST画像を表示する関数の定義 ==================
 from PIL import Image #画像表示にはPILモジュールを使う。
 
 def img_show(img):
@@ -30,21 +30,25 @@ def img_show(img):
   # print("-------- PIL型 ---------")
   # print(pil_img)
   pil_img.show()
-img = x_test[2001]
+img = x_test[4]
 print(img[0])
 # print("img.shape", img.shape) #784
-#------------------- 正解は？----------------------------
-label = t_test[2001]
+#------------------- 画像のデータをone_hot表現で(28*28)で出す----------------------------
+(x_train, t_train), (x_test, t_test) = \
+  load_mnist(flatten=True, normalize=True)
+
+normalized_img = x_test[4]
+print(normalized_img[0])
 k = 0
 aaa = []
 for i in range(28):
   for j in range(28):
-    aaa.append(img[k])
+    aaa.append(normalized_img[k])
     k += 1
   print(aaa)
   aaa = []
-# print("正解", label) #正解のデータ 5
-#-------------------変形してimg.show()に入れて実行 --------------------
-img = img.reshape(28, 28)
+# print("正解", t_test[0]) #正解のデータ 5
+#-------------------画像の出力 --------------------
+img = img.reshape(28, 28) #画像のサイズ(28*28)
 # print("img.shape2", img.shape) #28*28
 img_show(img)
