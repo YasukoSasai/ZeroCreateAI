@@ -1,14 +1,15 @@
 #========= 学習=============(5.7.4)
 """ 
-重みの可視化をしてくれます(ファイルとしてダウンロードされてしまうので不要な場合は削除してください)。
-必要に応じてtwo_layers_netファイルで層の数を変更してください(発表時は説明しやすいよう中間層を抜いて可視化しました.)
+重みの可視化をしてくれます(ファイルとしてダウンロードしてしまうので不要な場合は削除してください)。
+必要に応じてimportするモデルを変更し、層の数を変更してください。
+(発表時は説明しやすいよう中間層を抜いて可視化しました　one_layer_net.py)
 """
 import sys
 sys.path.append('../')
 import numpy as np
 import matplotlib.pyplot as plt
 from dataset.mnist import load_mnist
-from one_layer import TwoLayerNet
+from one_layer_net import TwoLayerNet
 from PIL import Image #画像表示にはPILモジュールを使う。
 # ================== ミニバッチ学習の実装 ==================
 (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True, one_hot_label=True)
@@ -38,7 +39,6 @@ for i in range (iters_num): #10000回繰り返し
     #誤差逆伝播法　高速！ 
     grad = network.gradient(x_batch, t_batch)
     #====== パラメータ更新 ======
-    # for key in ('W1', 'b1', 'W2', 'b2'):
     for key in ('W1', 'b1'):
         network.params[key] -= learning_rate * grad[key]
     #====== 学習経過の記録 ========
@@ -78,13 +78,13 @@ i = 0
 #     chrImg = ConvertToImg(x_test[i].reshape(chr_w, chr_h))
 #     canvas.paste(chrImg, (chr_w*x, chr_h))
 #     i = i + 1
-for item in batch_mask:
-    chrImg = ConvertToImg(x_test[item].reshape(chr_w, chr_h))
-    canvas.paste(chrImg, (chr_w*i, chr_h))
-    i = i + 1
+# for item in batch_mask:
+#     chrImg = ConvertToImg(x_test[item].reshape(chr_w, chr_h))
+#     canvas.paste(chrImg, (chr_w*i, chr_h))
+#     i = i + 1
 # canvas.show()
 # 表示した画像をJPEGとして保存
-canvas.save('mnist.jpg', 'JPEG', quality=100, optimize=True)
+# canvas.save('mnist.jpg', 'JPEG', quality=100, optimize=True)
 print(network.params['W1'].shape)
 for num in range(10):
   a = []

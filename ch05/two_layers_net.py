@@ -8,23 +8,16 @@ from collections import OrderedDict
 #------------- 誤差逆伝播に対応したNNの実装 ------------------
 class TwoLayerNet:
     def __init__(self, input_size, hidden_size, output_size, weight_init_std=0.01): 
-        # print("------モデルの形------")
-        # print("入力数：", input_size)
-        # print("中間層：", hidden_size)
-        # print("出力層：", output_size)
+        print(" --------- モデルの形 --------- ")
+        print("入力数：", input_size)
+        print("中間層：", hidden_size)
+        print("出力層：", output_size)
         #__init__クラスの初期化メソッド。input_size=784,output_size=10クラス,hiddenは適当な数を設定
         self.params = {} #ディクショナリ変数。それぞれNumpy配列で格納。
         self.params['W1'] = weight_init_std * np.random.randn(input_size, hidden_size) #random.randn = 形状が(784*50)の(0以上1未満の乱数)
-        # print("W1", self.params['W1'][0]) #(50,)
-        # print(input_size) #784
-        # print(hidden_size) #50
-        self.params['b1'] = np.zeros(hidden_size) #形状は(50)で全て0のバイアス。
-        # print("b1", self.params['b1'])
+        self.params['b1'] = np.zeros(hidden_size) #形状は(50)で全て0。
         self.params['W2'] = weight_init_std * np.random.randn(hidden_size, output_size)#(50*10)
-        # print("W2", self.params['W2'][0]) #(10,)
         self.params['b2'] = np.zeros(output_size)
-        # print(output_size) #10
-        # print("b2", self.params['b2'])
 
         #レイヤの作成
         self.layers = OrderedDict() #順番付きのディクショナリ。追加した順番を覚えることができる。→追加した順にレイヤのforward()を呼び出すだけで処理が完了。backwardも同様。AffineレイヤやReLuレイヤが順伝播・逆伝播をかんたんにしてる。
@@ -52,19 +45,19 @@ class TwoLayerNet:
     def accuracy(self, x, t): 
         y = self.predict(x) #出力yにxのself.predictの値を代入。
         self.lastLayer.forward(y, t)
-        print("------- 予測確率 -------")
-        print(self.lastLayer.y)
+        # print("------- 予測確率 -------")
+        # print(self.lastLayer.y)
         y = np.argmax(self.lastLayer.y, axis=1) #axis=1　1次元を(列)を軸に最大値を抜き出す。
         if t.ndim != 1 : t = np.argmax(t, axis = 1)
-        print("予測結果", y)
-        print("正解データ",t)
+        # print("予測結果", y)
+        # print("正解データ",t)
 
         accuracy = np.sum(y == t) / float(x.shape[0]) #y==tの合計値/入力値の形状の0次元
         return accuracy
 
-    #勾配
-    def numerical_gradient(self, x, t): ##ここでなんか時間かかる‥ → [誤差逆伝播法]
-        loss_W = lambda W: self.loss(x, t) #W重みを引数としたloss_W関数。入力と正解データを実引数としたlossの値を返却。数値微分
+    #数値微分　時間かかる
+    def numerical_gradient(self, x, t): #時間かかる‥ → [誤差逆伝播法]
+        loss_W = lambda W: self.loss(x, t) #W重みを引数としたloss_W関数。入力と正解データを実引数としたlossの値をreturn。
 
         grads = {} #勾配のディクショナリ変数。pramsと同じようにそれぞれの勾配が格納される。
         grads['W1'] = numerical_gradient(loss_W, self.params['W1']) #loss_Wとself.params['W1']を実引数としたnumerical_gradientの値を代入。
@@ -73,6 +66,7 @@ class TwoLayerNet:
         grads['b2'] = numerical_gradient(loss_W, self.params['b2'])
 
         return grads #全てのパラメータを配列に格納し終わったらgradsで返す。
+        
     #誤差逆伝播法
     def gradient(self, x, t):
         #forward
