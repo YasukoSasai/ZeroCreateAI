@@ -45,12 +45,12 @@ class TwoLayerNet:
     def accuracy(self, x, t): 
         y = self.predict(x) #出力yにxのself.predictの値を代入。
         self.lastLayer.forward(y, t)
-        # print("------- 予測確率 -------")
-        # print(self.lastLayer.y)
+        print("------- 予測確率 -------")
+        print(self.lastLayer.y)
         y = np.argmax(self.lastLayer.y, axis=1) #axis=1　1次元を(列)を軸に最大値を抜き出す。
         if t.ndim != 1 : t = np.argmax(t, axis = 1)
-        # print("予測結果", y)
-        # print("正解データ",t)
+        print("予測結果", y)
+        print("正解データ",t)
 
         accuracy = np.sum(y == t) / float(x.shape[0]) #y==tの合計値/入力値の形状の0次元
         return accuracy

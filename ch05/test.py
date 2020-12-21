@@ -6,6 +6,7 @@ from two_layers_net import TwoLayerNet
 from PIL import Image #画像表示にはPILモジュールを使う。
 import numpy as np
 import matplotlib.pyplot as plt
+from datetime import datetime
 
 # ========= データを取得(入力データを一次元化、正解ラベルをone_hot_label化) ========= 
 (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True, one_hot_label=True)
@@ -32,7 +33,8 @@ iter_per_epoch = max(train_size / batch_size, 1) #1エポックあたりの学�
 
 # ========= 学習フェーズ ========= 
 print(" ========= 学習開始 ========= ")
-#開始時間取得
+started_time = datetime.now()
+
 for i in range (iters_num): #10000回繰り返し
     # ========= ミニバッチの取得 =========
     batch_mask = np.random.choice(train_size, batch_size) #60000個の中から100個ランダムでインデックスを取り出す
@@ -55,12 +57,13 @@ for i in range (iters_num): #10000回繰り返し
     # ========= パラメータ更新 ========= 
     for key in ('W1', 'b1', 'W2', 'b2'):
         network.params[key] -= learning_rate * grad[key]
-#終了時間取得
-#print(終了ー開始)
+
+finished_time = datetime.now()
+print("学習時間", finished_time - started_time)
 
 # ========= テストフェーズ ========= 
 print(" ========= テスト開始 ========= ")
-#開始時間取得
+started_time2 = datetime.now()
 # ========= 複数枚でテストしたい時(画像表示の仕方も変更する) ========= 
 # test_size = x_test.shape[0]
 # batch_mask = np.random.choice(test_size, 10) #何枚でテストを行いたいか
@@ -77,8 +80,8 @@ x_test = x_test[[500]]
 t_test = t_test[[500]] 
 test_acc = network.accuracy(x_test, t_test)
 
-#終了時間取得
-#print(終了ー開始)
+finished_time2 = datetime.now()
+print("テスト時間", finished_time2 - started_time2)
 
 # ========= テストの精度 ========= 
 print("test acc: "+ str(test_acc))

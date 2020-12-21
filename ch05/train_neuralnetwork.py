@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from dataset.mnist import load_mnist
 from two_layers_net import TwoLayerNet
+from datetime import datetime
 
 (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True, one_hot_label=True)
 
@@ -29,6 +30,8 @@ test_acc_list = [] #テストデータ(テスト)における正確率を格納�
 iter_per_epoch = max(train_size / batch_size, 1) #1エポックあたりの学習回数。600回。。
 
 # ========= 学習フェーズ ========= 
+started_time = datetime.now()
+
 for i in range (iters_num): #10000回繰り返し
     # ========= ミニバッチの取得 ========= 
     batch_mask = np.random.choice(train_size, batch_size) #train_sizeの中からbatch_sizeランダムでインデックスを配列で取り出す。
@@ -64,6 +67,8 @@ for i in range (iters_num): #10000回繰り返し
     loss = network.loss(x_batch, t_batch)
     train_loss_list.append(loss)
 
+
+
 # ========= テストフェーズ =========     
 #1エポックごとにテストデータで認識精度を計算　計算時間がかかるのでざっくり。
     if i % iter_per_epoch == 0:
@@ -74,6 +79,8 @@ for i in range (iters_num): #10000回繰り返し
         test_acc_list.append(test_acc)
         print("train acc, test acc | " + str(train_acc) + ", " + str(test_acc))
 
+finished_time = datetime.now()
+print("学習 + テスト時間", finished_time - started_time)
 # ************* グラフ化 ******************
 # ========= 学習による誤差推移 ========= 
 plt.plot(train_loss_list)
