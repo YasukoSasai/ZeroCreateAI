@@ -17,14 +17,14 @@ from PIL import Image #画像表示にはPILモジュールを使う。
 def img_show(img):  
   pil_img = Image.fromarray(np.uint8(img)) 
   pil_img.show()
-img = x_test[500]
+img = x_test[600]
 print(img[0])
 
 # ========= 画像のデータを(28*28)で出す =========
 (x_train, t_train), (x_test, t_test) = \
   load_mnist(flatten=True, normalize=True)
 
-normalized_img = x_test[500]
+normalized_img = x_test[600]
 print(normalized_img[0])
 k = 0
 aaa = []
