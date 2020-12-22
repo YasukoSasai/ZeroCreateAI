@@ -45,8 +45,18 @@ class TwoLayerNet:
     def accuracy(self, x, t): 
         y = self.predict(x) #出力yにxのself.predictの値を代入。
         self.lastLayer.forward(y, t)
-        print("------- 予測確率 -------")
-        print(self.lastLayer.y)
+        print(" ------- 推測結果(ソフトマックスの結果) -------")
+        # print(self.lastLayer.y)
+        print("0の確率:", self.lastLayer.y[0, 0])
+        print("1の確率:", self.lastLayer.y[0, 1])
+        print("2の確率:", self.lastLayer.y[0, 2])
+        print("3の確率:", self.lastLayer.y[0, 3])
+        print("4の確率:", self.lastLayer.y[0, 4])
+        print("5の確率:", self.lastLayer.y[0, 5])
+        print("6の確率:", self.lastLayer.y[0, 6])
+        print("7の確率:", self.lastLayer.y[0, 7])
+        print("8の確率:", self.lastLayer.y[0, 8])
+        print("9の確率:", self.lastLayer.y[0, 9])
         y = np.argmax(self.lastLayer.y, axis=1) #axis=1　1次元を(列)を軸に最大値を抜き出す。
         if t.ndim != 1 : t = np.argmax(t, axis = 1)
         print("予測結果", y)

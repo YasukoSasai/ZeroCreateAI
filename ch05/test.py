@@ -58,8 +58,8 @@ for i in range (iters_num): #10000回繰り返し
     for key in ('W1', 'b1', 'W2', 'b2'):
         network.params[key] -= learning_rate * grad[key]
 
-finished_time = datetime.now()
-print("学習時間", finished_time - started_time)
+# finished_time = datetime.now()
+# print("学習時間", finished_time - started_time)
 
 # ========= テストフェーズ ========= 
 print(" ========= テスト開始 ========= ")
@@ -80,8 +80,8 @@ x_test = x_test[[500]]
 t_test = t_test[[500]] 
 test_acc = network.accuracy(x_test, t_test)
 
-finished_time2 = datetime.now()
-print("テスト時間", finished_time2 - started_time2)
+# finished_time2 = datetime.now()
+# print("テスト時間", finished_time2 - started_time2)
 
 # ========= テストの精度 ========= 
 print("test acc: "+ str(test_acc))
