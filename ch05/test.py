@@ -76,8 +76,8 @@ started_time2 = datetime.now()
 # print(test_acc_list)
 
 # ========= １枚でテストしたい時 ========= 
-x_test = x_test[[600]] 
-t_test = t_test[[600]] 
+x_test = x_test[[800]] 
+t_test = t_test[[800]] 
 test_acc = network.accuracy(x_test, t_test)
 
 # finished_time2 = datetime.now()
